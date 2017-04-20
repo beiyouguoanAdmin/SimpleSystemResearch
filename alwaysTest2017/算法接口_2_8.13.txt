@@ -1,0 +1,44 @@
+// 模板为820		.ModelSize
+// 数据为10240		nDataSize
+//每种训练数据为50	BufSize
+
+
+
+//---------------------------------------------
+// EnvironBuf: [in] double buf[50 * 10240] 	50次环境震动数据
+// IntrudeBuf: [in] double buf[50 * 10240] 	50次入侵震动数据
+// EnvironTemp: [out] double buf[820]		环境模板
+// IntrudeTemp: [out] double buf[820]		入侵模板
+// nDataSize:	[in] int 	每个分析数据的长度______________新增
+// int BufSize:	[in] int	实际每次读入的数据数目__________新增
+// int ModelSize:[in] int	每个模板的长度__________________新增
+// return: 0成功 1失败
+//---------------------------------------------
+int TemplateCreate(double *EnvironBuf, double *IntrudeBuf, double *EnvironTemp, double *IntrudeTemp)	//原来的
+// 修正后
+int TemplateCreate(double *EnvironBuf, double *IntrudeBuf, double *EnvironTemp, double *IntrudeTemp, int nDataSize, int BufSize, int ModelSize)
+
+//---------------------------------------------
+// DataBuf: 	[in] double buf[10240] 	一次震动的数据
+// EnvironTemp: [in] double buf[820]	环境模板
+// IntrudeTemp: [in] double buf[820]	入侵模板
+// nDataSize:	[in] int 	每个分析数据的长度______________新增
+// int ModelSize:[in] int	每个模板的长度__________________新增
+// Param:	[in] __para		4个可调算法参数
+// Param:	[out] __para	3个算法结果显示
+// return: 0非入侵 1入侵
+//---------------------------------------------
+typedef struct __PARA
+{
+	double fDistanceCtrl;	// 余弦距离最小值
+	double fReduceTail;		// <ReduceTail归为0
+	int nJudgement_1;		// 区域判定1
+	int nJudgement_2;		// 区域判定2
+// 添加调配过程展示内容______________新增
+	int ShowOutPos1;
+	int ShowOutPos2;
+	int DataEnd;	
+}__para;
+
+int IntrudeProcess(double *DataBuf, double *EnvironTemp, double *IntrudeTemp, int nDataSize);		// 测试用
+int IntrudeProcess(double *DataBuf, double *EnvironTemp, double *IntrudeTemp, int nDataSize, int ModelSize, __para &Param);	//实际用
